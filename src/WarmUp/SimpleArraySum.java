@@ -1,3 +1,4 @@
+package WarmUp;
 import java.util.Scanner;
 
 
