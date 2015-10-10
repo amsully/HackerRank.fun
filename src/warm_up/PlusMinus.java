@@ -1,4 +1,4 @@
-package WarmUp;
+package warm_up;
 
 import java.util.*;
 
