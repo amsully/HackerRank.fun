@@ -1,98 +1,138 @@
 package implementation;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
-
 public class TheGridSearch {
-
-	static Scanner scan = new Scanner(System.in);
 	
-	public static void main(String[] args)
+	public static Scanner scan = new Scanner(System.in);
+
+	
+	public static void main(String[] args) throws IOException
 	{
-		
+//		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 		int trials = scan.nextInt();
-		
 		for(int i = 0; i < trials; i++)
 		{
-		
-			int bigRows = scan.nextInt();
+			Solver solve = new Solver();
 			
-			int bigCols = scan.nextInt();
+			solve.gridSearch(scan);
 			
-			LinkedList<String> grid = new LinkedList<String>();
-			
-			for( int j = 0 ; j < bigRows ; j ++ )
-			{
-				
-				String row = scan.next();
-				
-				grid.add(row);
-				
-			}
-			
-			int smallRows = scan.nextInt();
-			int smallCols = scan.nextInt();
-			String start = scan.next();
-			boolean foundAMatch = false;
-			for(int j = 0; j < bigRows; j++)
-			{
-				
-//				System.out.println(grid.get(j).toString() + " " + start);
-//				System.out.println(grid.get(j).contains(start));
-//				System.out.println("Last Index: " + (grid.get(j).indexOf(start)+smallCols));
-//				System.out.println("First Index: " + grid.get(j).indexOf(start));
-				
-				if( grid.get(j).contains(start) )
-				{
-					String container = grid.get(j);
-					
-					while(container.contains(start))
-					{
-						foundAMatch = true;
-						findGrid(j+1, grid.get(j).indexOf(start), grid.get(j).indexOf(start)+smallCols, grid, smallRows);
-						container = container.substring(container.indexOf(start));  
-					}
-				}
-			}
-			if(!foundAMatch)
-			{
-				System.out.println("NO");
-			}
 			
 		}
+		
+		scan.close();
+		
 	}
+}
 
-	private static void findGrid(int i, int indexOf, int lastIndexOf,
-			LinkedList<String> grid, int smallRows) {
-		// TODO Auto-generated method stub
-		int rowsCovered = 1;
+class Solver {
+	
+//	public Scanner scan = new Scanner(System.in);
+	
+	public void gridSearch(Scanner scan)
+	{
 		
-		for( int k = i; k < grid.size(); k++ )
-		{
-			if( !grid.get(k).substring(indexOf, lastIndexOf).contains(scan.next()))
-			{
-				System.out.println("NO");
+		int bigMatrixRows = scan.nextInt();
+		
+		int bigMatrixColumns = scan.nextInt();
+
+		String[] bigMatrix = getMatrix(bigMatrixRows, scan);
+		
+		int smallMatrixRows = scan.nextInt();
+		int smallMatrixColumns = scan.nextInt();
+		
+		String[] smallMatrix = getMatrix(smallMatrixRows, scan);
 				
-				for( int z = rowsCovered+1; z < smallRows; z++)
-				{
-					scan.next();
-//					System.out.println(z);
-//					System.out.println("REMOVING " + scan.next());
-				}
-				return;
-			}
-			else
-			{
-				rowsCovered++;
-				if(rowsCovered == smallRows)
-				{
-					System.out.println("YES");
-					return;
-				}
-			}
+		if( subMatrix(smallMatrix, bigMatrix) )
+		{
+			System.out.println("YES");
 		}
-		
+		else
+		{
+			System.out.println("NO");
+		}
 		
 	}
 	
+	public boolean subMatrix(String[] smallMatrix, String[] bigMatrix) {
+		// TODO Auto-generated method stub
+		
+		
+		String startingOfSmallMatrix = smallMatrix[0];
+		
+		for( int i = 0; i < bigMatrix.length; i++ )
+		{
+			String bigRow = bigMatrix[i];
+			
+			while(bigRow.length() >= startingOfSmallMatrix.length())
+			{
+				if( bigRow.contains(startingOfSmallMatrix) )
+				{
+					
+					int startColumnOfSubMatrix = bigRow.indexOf(startingOfSmallMatrix);
+					int endColumnOfSubMatrix = startColumnOfSubMatrix + smallMatrix[0].length();
+					
+//					System.out.println("index:" + i + " statCol: " + startColumnOfSubMatrix + " " + endColumnOfSubMatrix);
+					
+					if( checkAllRows(i, startColumnOfSubMatrix, endColumnOfSubMatrix, smallMatrix, bigMatrix) )
+					{
+						return true;
+					}
+					
+					
+				}
+				bigRow = bigRow.substring(1);
+
+				
+			}
+			
+		}
+		
+		return false;
+	}
+
+	private boolean checkAllRows(int rowIndex, int startColumnOfSubMatrix,
+			int endColumnOfSubMatrix, String[] smallMatrix, String[] bigMatrix) {
+		// TODO Auto-generated method stub
+		
+		if(rowIndex + smallMatrix.length > bigMatrix.length ||   // If rows of sub matrix exceed big matrix
+				endColumnOfSubMatrix > bigMatrix[0].length() )  // if end of column
+			return false;
+		
+		for( int i = rowIndex ; i < rowIndex+smallMatrix.length; i++) //
+		{
+			
+			String subBigRow = bigMatrix[i].substring(startColumnOfSubMatrix, endColumnOfSubMatrix);
+//			System.out.println(subBigRow);
+			if(!subBigRow.contains(smallMatrix[i - rowIndex]))
+			{
+				return false;
+			}
+			
+		}
+		
+		return true;
+	}
+
+	public String[] getMatrix(int matrixRows, Scanner scan)
+	{
+		
+		
+		String[] bigMatrix = new String[matrixRows];
+		
+		for(int i = 0; i < matrixRows; i++)
+		{
+			bigMatrix[i] = scan.next();
+		}
+		
+		return bigMatrix;
+		
+	}
+	
+	
+	
 }
+
