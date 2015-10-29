@@ -25,8 +25,6 @@ public class TaumAndBday {
 			long costSwitch = scan.nextInt();
 			
 			System.out.println(printCost(black, white, costBlack, costWhite, costSwitch));
-			
-
 		}
 		
 	}
