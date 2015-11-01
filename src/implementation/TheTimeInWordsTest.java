@@ -14,7 +14,6 @@ public class TheTimeInWordsTest {
 	@Test
 	public void testHour()
 	{
-		assertEquals("one", new TheTimeInWords().getClockNumber(1));
 	}
 	
 	@Test
