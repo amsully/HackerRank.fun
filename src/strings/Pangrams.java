@@ -24,9 +24,9 @@ public class Pangrams {
 	private static String printPanagram(int[] alphabetBucket) {
 		// TODO Auto-generated method stub
 		for(int v : alphabetBucket)
-			if(v == 0) return "not panagram";
+			if(v == 0) return "not pangram";
 		
-		return "panagram";
+		return "pangram";
 	}
 	
 }
