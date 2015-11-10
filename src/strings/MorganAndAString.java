@@ -3,7 +3,6 @@ package strings;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.Scanner;
-import java.util.Stack;
 
 public class MorganAndAString {
 
