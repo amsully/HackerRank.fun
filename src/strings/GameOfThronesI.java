@@ -6,38 +6,42 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 
 public class GameOfThronesI {
-        
-        public static void main(String[] args) throws IOException{
-                
+
+        public static void main(String[] args) throws IOException {
+
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-                
+
                 String val = br.readLine();
-                
+
                 char[] valArr = val.toCharArray();
-                
+
                 Arrays.sort(valArr);
-                
-                
+
                 char prev = valArr[0];
-                
-                int count = -1; // count -1 for base case where prev = curr;
+
+                int count = 0; // count -1 for base case where prev = curr;
                 boolean valid = true;
-                for(char c : valArr){
-                        if(prev == c){
+
+                for (char c : valArr) {
+                        if (prev == c) {
                                 count++;
-                        }else{
-                                if(count %2 == 1 && valid){
-                                      valid = false;  
+                        } else {
+                                if (count % 2 == 1) {
+                                        if (valid) {
+                                                valid = false;
+                                        } else {
+
+                                                System.out.println("NO");
+                                                return;
+                                        }
                                 }else{
-                                        System.out.println("NO");
-                                        return;
+                                        count = 1;
                                 }
                         }
+                        prev = c;
                 }
                 System.out.println("YES");
-                
-                
-                
+
         }
-        
+
 }
